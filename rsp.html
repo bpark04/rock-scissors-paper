@@ -54,19 +54,18 @@
             _computer.style.backgroundSize = 'auto 200px';
         };
         let timeId = setInterval(changeImg, 50);
-
+        let clickable = true;
         const clickBtn = () => {
-            clearInterval(timeId);
-            _rock.removeEventListener('click', clickBtn);
-            _scissors.removeEventListener('click', clickBtn);
-            _paper.removeEventListener('click', clickBtn);
-            setTimeout(() => {
+            if (clickable) {
+                clearInterval(timeId);
+                clickable = false;
+                setTimeout(() => {
+                clickable = true;
                 clearInterval(timeId);   // executed 1s after click
                 timeId = setInterval(changeImg, 50);
-                _rock.addEventListener('click', clickBtn);
-                _scissors.addEventListener('click', clickBtn);
-                _paper.addEventListener('click', clickBtn);
             }, 1000)
+            }      
+            
         };
 
         _rock.addEventListener('click', clickBtn);
