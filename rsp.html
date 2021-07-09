@@ -1,0 +1,90 @@
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RockPaperScissors</title>
+    <style>
+        #computer {
+            width: 142px;
+            height: 200px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div id="computer"></div>
+    <div>
+        <button id="rock" class='btn'>Rock</button>
+        <button id="scissors" class='btn'>Scissors</button>
+        <button id="paper" class='btn'>Paper</button>
+    </div>
+    <div>Score: </div>
+
+    <script>
+        const _computer = document.querySelector('#computer');
+        const _score = document.querySelector('#score');
+        const _rock = document.querySelector('#rock');
+        const _scissors = document.querySelector('#scissors');
+        const _paper = document.querySelector('#paper');
+        const IMG_URL = './rsp.png';
+        _computer.style.background = `url(${IMG_URL}) -464px 0`;
+        _computer.style.backgroundSize = 'auto 200px';
+
+        const rspX = {
+            scissors: '0',
+            rock: '-220px',
+            paper: '-440px',
+        };
+
+        let computerChoice = 'scissors';
+        const changeImg = () => {
+
+            if (computerChoice === 'rock') { // 바위면
+                computerChoice = 'scissors';
+            } else if (computerChoice === 'scissors') { // 가위면
+                computerChoice = 'paper';
+            } else if (computerChoice === 'paper') { // 보면
+                computerChoice = 'rock';
+            }
+            // rspX.computerChoice doesnt' work === rspX["computerChoice"], only for rspX.rock... 
+            _computer.style.background = `url(${IMG_URL}) ${rspX[computerChoice]} 0`;
+            _computer.style.backgroundSize = 'auto 200px';
+        };
+        let timeId = setInterval(changeImg, 50);
+
+        const clickBtn = () => {
+            clearInterval(timeId);
+            _rock.removeEventListener('click', clickBtn);
+            _scissors.removeEventListener('click', clickBtn);
+            _paper.removeEventListener('click', clickBtn);
+            setTimeout(() => {
+                clearInterval(timeId);   // executed 1s after click
+                timeId = setInterval(changeImg, 50);
+                _rock.addEventListener('click', clickBtn);
+                _scissors.addEventListener('click', clickBtn);
+                _paper.addEventListener('click', clickBtn);
+            }, 1000)
+        };
+
+        _rock.addEventListener('click', clickBtn);
+        _scissors.addEventListener('click', clickBtn);
+        _paper.addEventListener('click', clickBtn);
+
+
+
+
+
+
+
+
+
+    </script>
+
+
+
+</body>
+
+</html>
