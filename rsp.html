@@ -21,7 +21,7 @@
         <button id="scissors" class='btn'>Scissors</button>
         <button id="paper" class='btn'>Paper</button>
     </div>
-    <div>Score: </div>
+    <div id="score"></div>
 
     <script>
         const _computer = document.querySelector('#computer');
@@ -41,7 +41,6 @@
 
         let computerChoice = 'scissors';
         const changeImg = () => {
-
             if (computerChoice === 'rock') { // 바위면
                 computerChoice = 'scissors';
             } else if (computerChoice === 'scissors') { // 가위면
@@ -49,28 +48,60 @@
             } else if (computerChoice === 'paper') { // 보면
                 computerChoice = 'rock';
             }
-            // rspX.computerChoice doesnt' work === rspX["computerChoice"], only for rspX.rock... 
             _computer.style.background = `url(${IMG_URL}) ${rspX[computerChoice]} 0`;
             _computer.style.backgroundSize = 'auto 200px';
-        };
-        let timeId = setInterval(changeImg, 50);
-        let clickable = true;
-        const clickBtn = () => {
-            if (clickable) {
-                clearInterval(timeId);
-                clickable = false;
-                setTimeout(() => {
-                clickable = true;
-                clearInterval(timeId);   // executed 1s after click
-                timeId = setInterval(changeImg, 50);
-            }, 1000)
-            }      
-            
+        }
+
+        const scoreTable = {
+            rock: 0,
+            scissors: 1,
+            paper: -1,
         };
 
-        _rock.addEventListener('click', clickBtn);
-        _scissors.addEventListener('click', clickBtn);
-        _paper.addEventListener('click', clickBtn);
+        let intervalId = setInterval(changeImg, 50);
+        let clickable = true;
+        let score = 0;
+        const clickButton = () => {
+            if (clickable) {
+                clearInterval(intervalId);
+                clickable = false;
+
+                const myChoice = event.target.textContent === 'Rock'
+                    ? 'rock'
+                    : event.target.textContent === 'Scissors'
+                        ? 'scissors'
+                        : 'paper';
+                const myScore = scoreTable[myChoice];
+                const computerScore = scoreTable[computerChoice];
+                const diff = myScore - computerScore;
+
+                let message;
+                // 2, -1은 승리조건이고, -2, 1은 패배조건, 점수표 참고
+                if ([2, -1].includes(diff)) {
+                    score += 1;
+                    message = 'Win';
+                } else if ([-2, 1].includes(diff)) {
+                    score -= 1;
+                    message = 'Loss';
+                } else {
+                    message = 'Tie';
+                }
+
+                _score.textContent = `${message}`;
+
+                setTimeout(() => {
+                    clickable = true;
+                    intervalId = setInterval(changeImg, 50);
+                }, 1000);
+
+            }
+
+        }
+
+
+        _rock.addEventListener('click', clickButton);
+        _scissors.addEventListener('click', clickButton);
+        _paper.addEventListener('click', clickButton);
 
 
 
