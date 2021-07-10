@@ -9,19 +9,22 @@
         #computer {
             width: 142px;
             height: 200px;
+            margin-bottom: 40px;
         }
     </style>
 </head>
 
 <body>
-
+    <div style='margin-bottom: 20px;'>Computer: </div>
     <div id="computer"></div>
-    <div>
+    <div style='margin-bottom: 10px;'>You: </div>
+    <div style='margin-bottom: 20px;'>
         <button id="rock" class='btn'>Rock</button>
         <button id="scissors" class='btn'>Scissors</button>
         <button id="paper" class='btn'>Paper</button>
     </div>
-    <div id="score"></div>
+    <span style='margin-bottom: 20px;'>Result:   </span>
+    <span id="score" style='margin-bottom: 20px;'></span>
 
     <script>
         const _computer = document.querySelector('#computer');
@@ -41,11 +44,11 @@
 
         let computerChoice = 'scissors';
         const changeImg = () => {
-            if (computerChoice === 'rock') { // 바위면
+            if (computerChoice === 'rock') { 
                 computerChoice = 'scissors';
-            } else if (computerChoice === 'scissors') { // 가위면
+            } else if (computerChoice === 'scissors') { 
                 computerChoice = 'paper';
-            } else if (computerChoice === 'paper') { // 보면
+            } else if (computerChoice === 'paper') { 
                 computerChoice = 'rock';
             }
             _computer.style.background = `url(${IMG_URL}) ${rspX[computerChoice]} 0`;
@@ -76,7 +79,6 @@
                 const diff = myScore - computerScore;
 
                 let message;
-                // 2, -1은 승리조건이고, -2, 1은 패배조건, 점수표 참고
                 if ([2, -1].includes(diff)) {
                     score += 1;
                     message = 'Win';
@@ -92,10 +94,9 @@
                 setTimeout(() => {
                     clickable = true;
                     intervalId = setInterval(changeImg, 50);
-                }, 1000);
-
+                    _score.textContent = ``;
+                }, 2000);
             }
-
         }
 
 
