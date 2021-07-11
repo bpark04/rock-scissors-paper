@@ -1,0 +1,121 @@
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RockPaperScissors</title>
+    <style>
+        #computer {
+            width: 142px;
+            height: 200px;
+            margin-bottom: 40px;
+        }
+    </style>
+</head>
+
+<body>
+    <div style='margin-bottom: 20px;'>Computer: </div>
+    <div id="computer"></div>
+    <div style='margin-bottom: 10px;'>You: </div>
+    <div style='margin-bottom: 20px;'>
+        <button id="rock" class='btn'>Rock</button>
+        <button id="scissors" class='btn'>Scissors</button>
+        <button id="paper" class='btn'>Paper</button>
+    </div>
+    <span style='margin-bottom: 20px;'>Result:   </span>
+    <span id="score" style='margin-bottom: 20px;'></span>
+
+    <script>
+        const _computer = document.querySelector('#computer');
+        const _score = document.querySelector('#score');
+        const _rock = document.querySelector('#rock');
+        const _scissors = document.querySelector('#scissors');
+        const _paper = document.querySelector('#paper');
+        const IMG_URL = './rsp.png';
+        _computer.style.background = `url(${IMG_URL}) -464px 0`;
+        _computer.style.backgroundSize = 'auto 200px';
+
+        const rspX = {
+            scissors: '0',
+            rock: '-220px',
+            paper: '-440px',
+        };
+
+        let computerChoice = 'scissors';
+        const changeImg = () => {
+            if (computerChoice === 'rock') { 
+                computerChoice = 'scissors';
+            } else if (computerChoice === 'scissors') { 
+                computerChoice = 'paper';
+            } else if (computerChoice === 'paper') { 
+                computerChoice = 'rock';
+            }
+            _computer.style.background = `url(${IMG_URL}) ${rspX[computerChoice]} 0`;
+            _computer.style.backgroundSize = 'auto 200px';
+        }
+
+        const scoreTable = {
+            rock: 0,
+            scissors: 1,
+            paper: -1,
+        };
+
+        let intervalId = setInterval(changeImg, 50);
+        let clickable = true;
+        let score = 0;
+        const clickButton = () => {
+            if (clickable) {
+                clearInterval(intervalId);
+                clickable = false;
+
+                const myChoice = event.target.textContent === 'Rock'
+                    ? 'rock'
+                    : event.target.textContent === 'Scissors'
+                        ? 'scissors'
+                        : 'paper';
+                const myScore = scoreTable[myChoice];
+                const computerScore = scoreTable[computerChoice];
+                const diff = myScore - computerScore;
+
+                let message;
+                if ([2, -1].includes(diff)) {
+                    score += 1;
+                    message = 'Win';
+                } else if ([-2, 1].includes(diff)) {
+                    score -= 1;
+                    message = 'Loss';
+                } else {
+                    message = 'Tie';
+                }
+
+                _score.textContent = `${message}`;
+
+                setTimeout(() => {
+                    clickable = true;
+                    intervalId = setInterval(changeImg, 50);
+                    _score.textContent = ``;
+                }, 2000);
+            }
+        }
+
+
+        _rock.addEventListener('click', clickButton);
+        _scissors.addEventListener('click', clickButton);
+        _paper.addEventListener('click', clickButton);
+
+
+
+
+
+
+
+
+
+    </script>
+
+
+
+</body>
+
+</html>
